@@ -151,3 +151,6 @@ app.get('/api/test-connection', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// Export for Vercel
+module.exports = app;

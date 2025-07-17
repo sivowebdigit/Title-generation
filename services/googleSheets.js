@@ -5,7 +5,8 @@ class GoogleSheetsService {
     constructor() {
         this.auth = null;
         this.sheets = null;
-        this.spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID || '1duCmIcUIomO2GJZaAF36JsNGDfhHO0Wh5FosxvKeT0s';
+        this.inputSheetId = process.env.INPUT_SHEET_ID;
+        this.outputSheetId = process.env.OUTPUT_SHEET_ID;
         this.initializeAuth();
     }
 
@@ -13,7 +14,16 @@ class GoogleSheetsService {
         try {
             // Try service account authentication first
             if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
-                const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+                let credentials;
+                try {
+                    // Try to parse as JSON first (for local development)
+                    credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+                } catch (e) {
+                    // If that fails, assume it's Base64 encoded (for Vercel deployment)
+                    const decodedCredentials = Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf8');
+                    credentials = JSON.parse(decodedCredentials);
+                }
+                
                 this.auth = new google.auth.GoogleAuth({
                     credentials,
                     scopes: ['https://www.googleapis.com/auth/spreadsheets']
