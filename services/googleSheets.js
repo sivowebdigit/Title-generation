@@ -5,8 +5,7 @@ class GoogleSheetsService {
     constructor() {
         this.auth = null;
         this.sheets = null;
-        this.inputSheetId = process.env.INPUT_SHEET_ID;
-        this.outputSheetId = process.env.OUTPUT_SHEET_ID;
+        this.spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID || '1duCmIcUIomO2GJZaAF36JsNGDfhHO0Wh5FosxvKeT0s';
         this.initializeAuth();
     }
 
