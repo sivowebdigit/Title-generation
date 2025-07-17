@@ -3,4 +3,5 @@ node_modules/
 *.log
 .DS_Store
 credentials.json
+credentials-base64.txt
 token.json
